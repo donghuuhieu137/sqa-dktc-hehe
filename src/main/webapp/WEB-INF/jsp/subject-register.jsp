@@ -132,7 +132,8 @@
          </table>
 
 		<div style="display: flex; justify-content: center;">
-			<button class="btn" type="submit"> Chọn </button>
+			<a style= "margin-right: 70px" href="javascript:void(0)" onclick=subject.save()> Lưu </button>
+			<a href="/homepage"> Quay lại </a>
 		</div>
 
 	</form>

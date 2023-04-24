@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface SubjectService {
     public List<Subject> findSubjectByCode(String maMon);
+
+    public boolean saveSubject(Long subjectId, Long userId);
+
 }

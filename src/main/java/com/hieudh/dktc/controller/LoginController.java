@@ -30,7 +30,6 @@ public class LoginController {
             HttpSession session,
             HttpServletRequest request
     ){
-        String userType = request.getParameter("user_type");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 

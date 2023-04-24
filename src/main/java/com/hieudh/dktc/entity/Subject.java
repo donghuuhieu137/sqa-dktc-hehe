@@ -1,8 +1,10 @@
 package com.hieudh.dktc.entity;
 
-import org.springframework.lang.Nullable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,13 +36,15 @@ public class Subject {
     @Column(name = "con_lai")
     private int conLai;
 
-    @ManyToMany(mappedBy = "subjects")
-    private Set<User> users;
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<TimeTable> timeTable;
 
     public Subject() {
     }
 
-    public Subject(int id, String maMon, String ten, int nhom, int toThucHanh, int soTinChi, int soTinChiHP, String maLop, int siSo, int conLai, Set<User> users) {
+    public Subject(int id, String maMon, String ten, int nhom, int toThucHanh, int soTinChi, int soTinChiHP, String maLop, int siSo, int conLai) {
         this.id = id;
         this.maMon = maMon;
         this.ten = ten;
@@ -51,7 +55,6 @@ public class Subject {
         this.maLop = maLop;
         this.siSo = siSo;
         this.conLai = conLai;
-        this.users = users;
     }
 
     public int getId() {
@@ -134,14 +137,6 @@ public class Subject {
         this.conLai = conLai;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
     @Override
     public String toString() {
         return "Subject{" +
@@ -155,7 +150,14 @@ public class Subject {
                 ", maLop='" + maLop + '\'' +
                 ", siSo=" + siSo +
                 ", conLai=" + conLai +
-                ", users=" + users +
                 '}';
+    }
+
+    public List<TimeTable> getTimeTable() {
+        return timeTable;
+    }
+
+    public void setTimeTable(List<TimeTable> timeTable) {
+        this.timeTable = timeTable;
     }
 }

@@ -49,7 +49,7 @@ public class User {
     @JoinTable(
             name = "users_subjects",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
     private Set<Subject> subjects;
 

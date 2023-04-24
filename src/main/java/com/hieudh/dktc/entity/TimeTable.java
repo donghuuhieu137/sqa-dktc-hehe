@@ -1,6 +1,10 @@
 package com.hieudh.dktc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.PublicKey;
@@ -21,6 +25,9 @@ public class TimeTable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private Subject subject;
 
     @Column(name = "thu")
@@ -104,4 +111,6 @@ public class TimeTable {
     public void setTuan(String tuan) {
         this.tuan = tuan;
     }
+
+
 }
