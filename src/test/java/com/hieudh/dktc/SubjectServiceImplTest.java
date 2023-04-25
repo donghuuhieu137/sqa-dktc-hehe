@@ -1,0 +1,79 @@
+package com.hieudh.dktc;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import com.hieudh.dktc.dto.UserDTO;
+import com.hieudh.dktc.service.impl.SubjectServiceImpl;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import com.hieudh.dktc.entity.Subject;
+import com.hieudh.dktc.repository.SubjectRepository;
+
+@RunWith(MockitoJUnitRunner.class)
+public class SubjectServiceImplTest {
+
+    @Mock
+    private EntityManager entityManager;
+
+    @Mock
+    private Query query;
+
+    @Mock
+    private SubjectRepository subjectRepository;
+
+    @InjectMocks
+    private SubjectServiceImpl subjectService;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        when(entityManager.createNativeQuery(anyString(), eq(Subject.class))).thenReturn(query);
+    }
+
+    @Test
+    public void testFindSubjectByCode() {
+        String maMon = "ABC";
+        List<Subject> expectedSubjects = new ArrayList<>();
+        expectedSubjects.add(new Subject("ABC", "Test Subject", 3, 0));
+        when(query.getResultList()).thenReturn(expectedSubjects);
+
+        List<Subject> actualSubjects = subjectService.findSubjectByCode(maMon);
+
+        assertEquals(expectedSubjects, actualSubjects);
+    }
+
+    @Test
+    public void testSaveSubject() {
+        Long subjectId = 1L;
+        Long userId = 2L;
+        Subject subject = new Subject();
+        subject.setConLai(1);
+        Query queryCheck = mock(Query.class);
+        when(entityManager.createNativeQuery(any(String.class), any(Class.class))).thenReturn(queryCheck);
+        when(queryCheck.getResultList()).thenReturn(List.of(subject));
+        Query queryUpdate = mock(Query.class);
+        when(entityManager.createNativeQuery(any(String.class))).thenReturn(queryUpdate);
+        Query query = mock(Query.class);
+        when(entityManager.createNativeQuery(any(String.class))).thenReturn(query);
+        int expectedConLai = subject.getConLai() - 1;
+        when(query.executeUpdate()).thenReturn(1);
+        boolean result = subjectService.saveSubject(subjectId, userId);
+        assertNotEquals(expectedConLai, subject.getConLai());
+        assertEquals(true, result);
+    }
+
+}
