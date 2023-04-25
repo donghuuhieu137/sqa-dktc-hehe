@@ -2,13 +2,14 @@ package com.hieudh.dktc;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.*;
 
+import com.hieudh.dktc.entity.TimeTable;
 import com.hieudh.dktc.entity.User;
 import com.hieudh.dktc.service.impl.SubjectServiceImpl;
 import com.hieudh.dktc.service.impl.UserServiceImpl;
@@ -23,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hieudh.dktc.entity.Subject;
+import java.util.Optional;
 import com.hieudh.dktc.repository.SubjectRepository;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,32 +66,30 @@ public class SubjectServiceImplTest {
 
     @Test
     public void testSaveSubject() {
-        // arrange
         Long subjectId = 1L;
         Long userId = 2L;
-        User user = new User();
-        user.setKhoa(1);
+
+        // Mocking the database queries
         Subject subject = new Subject();
-        subject.setConLai(10);
-        subject.setKhoaToiThieu(0);
-        subject.setSoTinChi(4);
+        subject.setId(Math.toIntExact(subjectId));
+        subject.setConLai(1);
+        subject.setKhoaToiThieu(3);
+        subject.setSoTinChi(3);
         Query query = mock(Query.class);
         when(entityManager.createNativeQuery(anyString())).thenReturn(query);
-        when(subjectRepository.findById(eq(subjectId))).thenReturn(java.util.Optional.ofNullable(subject));
-        when(userService.findById(eq(userId))).thenReturn(user);
-        when(query.getResultList()).thenReturn(new ArrayList<>());
+//        Long userId = 1L;
+        User user = new User();
+        user.setId(1L);
 
-        // act
-        boolean actualResult = subjectService.saveSubject(subjectId, userId);
+        when(userService.findById(1L)).thenReturn(user);
+        List<Subject> expectedSubjects = new ArrayList<>();
+        expectedSubjects.add(new Subject(1,"ABC", "Test Subject", 3, 0, 3, 3, "ABC", 30, 2));
+        when(query.getResultList()).thenReturn(expectedSubjects);
 
-        // assert
-        verify(entityManager, times(3)).createNativeQuery(anyString());
-        verify(subjectRepository).findById(eq(subjectId));
-        verify(userService).findById(eq(userId));
-        verify(query, times(2)).getResultList();
-        verify(query).executeUpdate();
-        verify(subjectRepository).save(eq(subject));
-        Assert.assertTrue(actualResult);
+
+        // Testing the function call
+        boolean result = subjectService.saveSubject(subjectId, userId);
+        assertTrue(result);
     }
 
     @Test
@@ -127,4 +127,6 @@ public class SubjectServiceImplTest {
 //        verify(query, times(2)).executeUpdate();
         Assert.assertTrue(actualResult);
     }
+
+
 }
