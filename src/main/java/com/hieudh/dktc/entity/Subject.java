@@ -5,7 +5,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "tbl_mon_hoc")
@@ -42,9 +41,6 @@ public class Subject {
     private List<TimeTable> timeTable;
 
     private String tongHocPhi;
-
-    public Subject() {
-    }
 
     public Subject(int id, String maMon, String ten, int nhom, int toThucHanh, int soTinChi, int soTinChiHP, String maLop, int siSo, int conLai) {
         this.id = id;
