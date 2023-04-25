@@ -1,0 +1,52 @@
+body{
+    background-size: cover;
+    background-position-y: -80px;
+    font-size: 16px;
+}
+
+.signup__head {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.signup__body {
+    margin: auto;
+    width: 50%;
+    border: 3px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+.signup__body table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#searchSubject {
+    background: transparent;
+    width: 100%;
+    padding: 6px 10px;
+    transition: 0.25s ease-in-out;
+    margin-top: 30px;
+}
+#searchSubject{text-decoration: none}
+
+#lichHocTBL td{
+    width: 110px;
+    align-content: center;
+}
+
+.btn-register {
+    background: transparent;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    transition: 0.25s ease-in-out;
+    margin-top: 30px;
+}
+
+.btn-register a{text-decoration: none}
+
