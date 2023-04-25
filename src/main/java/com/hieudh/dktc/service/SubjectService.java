@@ -9,4 +9,7 @@ public interface SubjectService {
 
     public boolean saveSubject(Long subjectId, Long userId);
 
+    List<Subject> findSubjectByUserId(Long userId);
+
+    Boolean removeSubject(Long subjectId, Long userId);
 }

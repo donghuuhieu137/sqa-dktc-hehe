@@ -130,4 +130,26 @@ var subject = {
             }
         });
     },
+
+    remove: function() {
+        data = $(".xoa_mon_hoc:checked").val();
+        eleId = "#tr_chk_"+data;
+        console.log(eleId);
+        element = $(eleId);
+        console.log(data)
+        $.ajax({
+            url: "/remove-subject",
+            type: "post",
+            data: data, // object json -> string json
+            dataType: "text", // dữ liệu từ web-service trả về là json.
+            success: function(textResult) { // được gọi khi web-service trả về dữ liệu.
+                var jsonResult = jQuery.parseJSON(textResult);
+                element.remove();
+                alert(jsonResult.data);
+            },
+            error: function(jqXhr, textStatus, errorMessage) { // error callback
+
+            }
+        });
+    },
 };

@@ -7,6 +7,8 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="css/styles.css">
+      <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+      <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
       <title>Document</title>
       <script src="https://code.jquery.com/jquery-1.10.2.js"type="text/javascript"></script>
       <script src="js/ajax.js" type="text/javascript"></script>
@@ -31,7 +33,7 @@
                            <tr>
                               <td colspan="11" align="right" style="background-color:#6699FF;height:5px;"></td>
                               <td align="center" style="background-color:#6699FF;height:5px;">
-                                 <input type="button" id="bntXoaChon" value="Xóa">
+                                 <input type="button" id="bntXoaChon" value="Xóa" onclick=subject.remove()>
                               </td>
                            </tr>
                            <tr align="center">
@@ -71,8 +73,7 @@
                               <td>
                                  <asp:label id="lblG2TrangThai" runat="server">Trạng Thái môn học </asp:label>
                               </td>
-                              <td align="left" style="width:50px;"><input type="checkbox" id="IDchk_all" name="chk_all" onclick="check(this.form.chk_xoa);"></td>
-                           </tr>
+                            </tr>
                         </tbody>
                      </table>
                   </div>
@@ -80,28 +81,29 @@
                      <div id="divKQ">
                         <table class="body-table" style="border-collapse: collapse; color:Navy;" rules="all" border="1" cellspacing="0" cellpadding="0">
                            <tbody>
-                              <tr>
-                                 <td style="width: 30px;" valign="middle" align="center">1</td>
-                                 <td style="display:none" valign="middle" align="center">INT146105</td>
-                                 <td style="width: 60px;" valign="middle" align="center">INT1461</td>
-                                 <td style="width: 180px;" valign="middle" align="left">&nbsp;Xây dựng các hệ thống nhúng</td>
-                                 <td style="width: 35px;" valign="middle" align="center">05</td>
-                                 <td style="width: 45px;" valign="middle" align="center"></td>
-                                 <td style="width: 35px;" valign="middle" align="center">3</td>
-                                 <td style="width: 35px;" valign="middle" align="center">3</td>
-                                 <td style="width: 80px;" valign="middle" align="right">1,605,000&nbsp;</td>
-                                 <td style="width: 80px;" valign="middle" align="right">&nbsp;</td>
-                                 <td style="width: 80px;" valign="middle" align="right">1,605,000&nbsp;</td>
-                                 <td valign="middle" align="left">&nbsp;Đã lưu vào CSDL</td>
-                                 <td valign="middle" align="left" style="width: 50px;"><input style="" type="checkbox" id="chk_INT146105    " name="chk_xoa" value="INT146105"></td>
-                              </tr>
+                              <c:forEach items="${subjects}" var="subject">
+                                  <tr id="tr_chk_${subject.id}">
+                                    <td style="width: 30px;" valign="middle" align="center">1</td>
+                                    <td style="width: 60px;" valign="middle" align="center">${subject.maMon}</td>
+                                    <td style="width: 180px;" valign="middle" align="left">&nbsp;${subject.ten}</td>
+                                    <td style="width: 35px;" valign="middle" align="center">${subject.nhom}</td>
+                                    <td style="width: 45px;" valign="middle" align="center">${subject.toThucHanh}</td>
+                                    <td style="width: 35px;" valign="middle" align="center">${subject.soTinChi}</td>
+                                    <td style="width: 35px;" valign="middle" align="center">${subject.soTinChiHP}</td>
+                                    <td style="width: 80px;" valign="middle" align="right">${subject.tongHocPhi}&nbsp;</td>
+                                    <td style="width: 80px;" valign="middle" align="right">&nbsp;</td>
+                                    <td style="width: 80px;" valign="middle" align="right">${subject.tongHocPhi}&nbsp;</td>
+                                    <td valign="middle" align="left">&nbsp;Đã lưu vào CSDL</td>
+                                    <td valign="middle" align="left" style="width: 50px;"><input style="" type="radio" name="xoa_mon_hoc" class="xoa_mon_hoc" id="chk_${subject.id}" name="subjects[]" value="${subject.id}"></td>
+                                  </tr>
+                              </c:forEach>
                               <tr style="font-weight: bold;" height="20px">
                                  <td valign="middle" align="center" colspan="5">Tổng cộng</td>
-                                 <td valign="middle" align="center">25</td>
-                                 <td valign="middle" align="center">25</td>
-                                 <td valign="middle" align="right">15,634,000&nbsp;</td>
+                                 <td valign="middle" align="center">${tongSoTinChi}</td>
+                                 <td valign="middle" align="center">${tongSoTinChi}</td>
+                                 <td valign="middle" align="right">${tongHocPhi}&nbsp;</td>
                                  <td valign="middle" align="right">00&nbsp;</td>
-                                 <td valign="middle" align="right">15,634,000&nbsp;</td>
+                                 <td valign="middle" align="right">${tongHocPhi}&nbsp;</td>
                                  <td valign="middle" align="left"></td>
                                  <td valign="middle" align="center">
                                  </td>

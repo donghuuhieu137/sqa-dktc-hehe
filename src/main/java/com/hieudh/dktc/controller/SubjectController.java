@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -40,8 +43,22 @@ public class SubjectController {
     @RequestMapping(value = "/list-subject", method = RequestMethod.GET)
     public String listRegisteredSubject(ModelMap model, HttpSession session) {
         try{
+            long hocPhiTinChi = 535000;
+            DecimalFormat formatter = new DecimalFormat("###,###,###");
             Long userId = Long.parseLong(session.getAttribute("id").toString());
             User currentUser = userService.findById(userId);
+            List<Subject> subjects = subjectService.findSubjectByUserId(userId);
+            int tongSoTinChi = 0;
+            for (Subject subject: subjects){
+                String tongHocPhiMonHoc = formatter.format(hocPhiTinChi * subject.getSoTinChi());
+                subject.setTongHocPhi(tongHocPhiMonHoc);
+                tongSoTinChi += subject.getSoTinChi();
+            }
+            long tongHocPhi = tongSoTinChi * 535000;
+            String tongHocPhiStr = formatter.format(tongHocPhi);
+            model.addAttribute("subjects", subjects);
+            model.addAttribute("tongSoTinChi", tongSoTinChi);
+            model.addAttribute("tongHocPhi", tongHocPhiStr);
             return "list-subject";
         } catch (NullPointerException exception){
             return "redirect:login";
@@ -73,5 +90,17 @@ public class SubjectController {
             return ResponseEntity.ok(new AjaxDTO(200, "Lưu môn học thành công"));
         }
         return ResponseEntity.ok(new AjaxDTO(500, "Lưu môn học thất bại"));
+    }
+
+    @RequestMapping(value = "/remove-subject", method = RequestMethod.POST)
+    public ResponseEntity<AjaxDTO> removeSubject(final ModelMap model, final HttpServletRequest request, final HttpServletResponse response, @RequestBody String payload, HttpSession session) {
+        payload = payload.substring(0, payload.length() - 1);
+        Long userId = Long.parseLong(session.getAttribute("id").toString());
+        Long subjectId = Long.parseLong(payload);
+        Boolean result = subjectService.removeSubject(subjectId, userId);
+        if (result){
+            return ResponseEntity.ok(new AjaxDTO(200, "Xoá môn học thành công"));
+        }
+        return ResponseEntity.ok(new AjaxDTO(500, "Xoá môn học thất bại"));
     }
 }
