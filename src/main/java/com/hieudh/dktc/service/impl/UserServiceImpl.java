@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long login(String username, String password) {
+        // dang nhap
         User user = userRepository.findOneByUsername(username);
         if(user.getId() != null){
             if(Objects.equals(password, user.getPassword())){

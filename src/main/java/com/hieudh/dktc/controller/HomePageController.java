@@ -12,4 +12,8 @@ public class HomePageController {
         return "homepage";
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String redirectHomePage(ModelMap model) {
+        return "redirect:homepage";
+    }
 }
