@@ -42,6 +42,9 @@ public class Subject {
 
     private String tongHocPhi;
 
+    public Subject() {
+    }
+
     public Subject(int id, String maMon, String ten, int nhom, int toThucHanh, int soTinChi, int soTinChiHP, String maLop, int siSo, int conLai) {
         this.id = id;
         this.maMon = maMon;
