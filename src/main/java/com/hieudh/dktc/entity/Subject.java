@@ -35,6 +35,9 @@ public class Subject {
     @Column(name = "con_lai")
     private int conLai;
 
+    @Column(name = "khoa_toi_thieu")
+    private int khoaToiThieu;
+
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -168,5 +171,13 @@ public class Subject {
 
     public void setTongHocPhi(String tongHocPhi) {
         this.tongHocPhi = tongHocPhi;
+    }
+
+    public int getKhoaToiThieu() {
+        return khoaToiThieu;
+    }
+
+    public void setKhoaToiThieu(int khoaToiThieu) {
+        this.khoaToiThieu = khoaToiThieu;
     }
 }
