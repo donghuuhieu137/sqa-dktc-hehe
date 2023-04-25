@@ -61,6 +61,12 @@ public class Subject {
         this.conLai = conLai;
     }
 
+    public Subject(String abc123, String s) {
+    }
+
+    public Subject(String abc, String test_subject, int i, int i1) {
+    }
+
     public int getId() {
         return id;
     }
