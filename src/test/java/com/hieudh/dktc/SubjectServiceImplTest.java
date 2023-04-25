@@ -81,8 +81,8 @@ public class SubjectServiceImplTest {
         List<Subject> expectedSubjects = new ArrayList<>();
         expectedSubjects.add(new Subject(1, "ABC123", "Subject 1", 3, 0, 3, 3, "ABC", 30, 2));
         expectedSubjects.add(new Subject(2, "DEF456", "Subject 2",3, 0, 3, 3, "ABC", 30, 2));
-        String sql = "SELECT mh.* FROM tbl_mon_hoc AS mh INNER JOIN users_subjects AS us ON mh.id = us.subject_id WHERE us.user_id = "+ userId +"";
-//        when(entityManager.createNativeQuery(sql,Subject.class)).thenReturn(expectedSubjects);
+//        String sql = "SELECT mh.* FROM tbl_mon_hoc AS mh INNER JOIN users_subjects AS us ON mh.id = us.subject_id WHERE us.user_id = "+ userId +"";
+        when(query.getResultList()).thenReturn(expectedSubjects);
 
         // Act
         List<Subject> actualSubjects = subjectService.findSubjectByUserId(userId);
@@ -91,5 +91,10 @@ public class SubjectServiceImplTest {
         assertEquals(expectedSubjects.size(), actualSubjects.size());
         assertEquals(expectedSubjects.get(0).getTen(), actualSubjects.get(0).getTen());
         assertEquals(expectedSubjects.get(1).getTen(), actualSubjects.get(1).getTen());
+    }
+
+    @Test
+    public void testRemoveSubject(){
+
     }
 }
