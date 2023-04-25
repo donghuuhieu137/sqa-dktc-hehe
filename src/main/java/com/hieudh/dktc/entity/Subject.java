@@ -42,7 +42,7 @@ public class Subject {
 
     private String tongHocPhi;
 
-    public Subject() {
+    public Subject(String abc123, String s) {
     }
 
     public Subject(String maMon, String ten, int nhom, int toThucHanh) {

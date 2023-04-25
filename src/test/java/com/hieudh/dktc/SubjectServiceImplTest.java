@@ -9,14 +9,12 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.hieudh.dktc.dto.UserDTO;
 import com.hieudh.dktc.service.impl.SubjectServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -60,7 +58,7 @@ public class SubjectServiceImplTest {
     public void testSaveSubject() {
         Long subjectId = 1L;
         Long userId = 2L;
-        Subject subject = new Subject();
+        Subject subject = new Subject("ABC123", "Subject 1");
         subject.setConLai(1);
         Query queryCheck = mock(Query.class);
         when(entityManager.createNativeQuery(any(String.class), any(Class.class))).thenReturn(queryCheck);
@@ -76,4 +74,22 @@ public class SubjectServiceImplTest {
         assertEquals(true, result);
     }
 
+    @Test
+    public void testFindSubjectByUserId() {
+        // Arrange
+        Long userId = 1L;
+        List<Subject> expectedSubjects = new ArrayList<>();
+        expectedSubjects.add(new Subject("ABC123", "Subject 1"));
+        expectedSubjects.add(new Subject("DEF456", "Subject 2"));
+        String sql = "SELECT mh.* FROM tbl_mon_hoc AS mh INNER JOIN users_subjects AS us ON mh.id = us.subject_id WHERE us.user_id = "+ userId +"";
+        when(entityManager.createNativeQuery(sql,Subject.class)).thenReturn(expectedSubjects);
+
+        // Act
+        List<Subject> actualSubjects = subjectService.findSubjectByUserId(userId);
+
+        // Assert
+        assertEquals(expectedSubjects.size(), actualSubjects.size());
+        assertEquals(expectedSubjects.get(0).getTen(), actualSubjects.get(0).getTen());
+        assertEquals(expectedSubjects.get(1).getTen(), actualSubjects.get(1).getTen());
+    }
 }
