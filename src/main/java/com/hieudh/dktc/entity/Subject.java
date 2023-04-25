@@ -42,10 +42,7 @@ public class Subject {
 
     private String tongHocPhi;
 
-    public Subject(String abc123, String s) {
-    }
-
-    public Subject(String maMon, String ten, int nhom, int toThucHanh) {
+    public Subject(int id, String maMon, String ten, int nhom, int toThucHanh, int soTinChi, int soTinChiHP, String maLop, int siSo, int conLai) {
         this.id = id;
         this.maMon = maMon;
         this.ten = ten;

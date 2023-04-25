@@ -46,7 +46,7 @@ public class SubjectServiceImplTest {
     public void testFindSubjectByCode() {
         String maMon = "ABC";
         List<Subject> expectedSubjects = new ArrayList<>();
-        expectedSubjects.add(new Subject("ABC", "Test Subject", 3, 0));
+        expectedSubjects.add(new Subject(1,"ABC", "Test Subject", 3, 0, 3, 3, "ABC", 30, 2));
         when(query.getResultList()).thenReturn(expectedSubjects);
 
         List<Subject> actualSubjects = subjectService.findSubjectByCode(maMon);
@@ -58,7 +58,7 @@ public class SubjectServiceImplTest {
     public void testSaveSubject() {
         Long subjectId = 1L;
         Long userId = 2L;
-        Subject subject = new Subject("ABC123", "Subject 1");
+        Subject subject = new Subject(1,"ABC123", "Subject 1",3, 0, 3, 3, "ABC", 30, 2);
         subject.setConLai(1);
         Query queryCheck = mock(Query.class);
         when(entityManager.createNativeQuery(any(String.class), any(Class.class))).thenReturn(queryCheck);
@@ -79,10 +79,10 @@ public class SubjectServiceImplTest {
         // Arrange
         Long userId = 1L;
         List<Subject> expectedSubjects = new ArrayList<>();
-        expectedSubjects.add(new Subject("ABC123", "Subject 1"));
-        expectedSubjects.add(new Subject("DEF456", "Subject 2"));
+        expectedSubjects.add(new Subject(1, "ABC123", "Subject 1", 3, 0, 3, 3, "ABC", 30, 2));
+        expectedSubjects.add(new Subject(2, "DEF456", "Subject 2",3, 0, 3, 3, "ABC", 30, 2));
         String sql = "SELECT mh.* FROM tbl_mon_hoc AS mh INNER JOIN users_subjects AS us ON mh.id = us.subject_id WHERE us.user_id = "+ userId +"";
-        when(entityManager.createNativeQuery(sql,Subject.class)).thenReturn(expectedSubjects);
+//        when(entityManager.createNativeQuery(sql,Subject.class)).thenReturn(expectedSubjects);
 
         // Act
         List<Subject> actualSubjects = subjectService.findSubjectByUserId(userId);
