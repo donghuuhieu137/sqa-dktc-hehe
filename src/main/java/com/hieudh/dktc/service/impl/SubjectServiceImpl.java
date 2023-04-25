@@ -42,26 +42,52 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public boolean saveSubject(Long subjectId, Long userId) {
+            //Update Safe Rule DBMS
+            String sqlUpdateRule = "SET SQL_SAFE_UPDATES = 0;";
+            Query queryUpdate = entityManager.createNativeQuery(sqlUpdateRule);
+            queryUpdate.executeUpdate();
+            // Kiem tra so luong con lai cua mon
+            String sqlKiemTraCL = "SELECT * FROM tbl_mon_hoc WHERE id = " + subjectId + ";";
+            Query queryCheck = entityManager.createNativeQuery(sqlKiemTraCL, Subject.class);
+            Subject subject = (Subject) queryCheck.getResultList().get(0);
+            int conLai = subject.getConLai();
+            if (conLai <= 0) {
+                return false;
+            }
+            // Giam so luong con lai cua mon
+            String sqlGiamCL = "UPDATE tbl_mon_hoc SET con_lai = CASE WHEN con_lai > 0 THEN con_lai - 1 ELSE 0 END WHERE id = " + subjectId + ";";
+            Query query = entityManager.createNativeQuery(sqlGiamCL);
+            query.executeUpdate();
+            // Luu mon hoc da dang ky cho nguoi dung
+            String sqlSaveUserSubject = "INSERT INTO users_subjects (`user_id`, `subject_id`) VALUES ('" + userId + "', '" + subjectId + "');";
+            Query querySave = entityManager.createNativeQuery(sqlSaveUserSubject);
+            querySave.executeUpdate();
+        return true;
+    }
+
+    @Override
+    public List<Subject> findSubjectByUserId(Long userId) {
+        String sql = "SELECT mh.* FROM tbl_mon_hoc AS mh INNER JOIN users_subjects AS us ON mh.id = us.subject_id WHERE us.user_id = "+ userId +"";
+        Query query = entityManager.createNativeQuery(sql,Subject.class);
+        List<Subject> subjects =  query.getResultList();
+        return subjects;
+    }
+
+    @Override
+    public Boolean removeSubject(Long subjectId, Long userId) {
         //Update Safe Rule DBMS
         String sqlUpdateRule = "SET SQL_SAFE_UPDATES = 0;";
         Query queryUpdate = entityManager.createNativeQuery(sqlUpdateRule);
         queryUpdate.executeUpdate();
-        // Kiem tra so luong con lai cua mon
-        String sqlKiemTraCL = "SELECT * FROM tbl_mon_hoc WHERE id = " + subjectId + ";";
-        Query queryCheck = entityManager.createNativeQuery(sqlKiemTraCL, Subject.class);
-        Subject subject = (Subject) queryCheck.getResultList().get(0);
-        int conLai = subject.getConLai();
-        if (conLai <= 0) {
-            return false;
-        }
-        // Giam so luong con lai cua mon
-        String sqlGiamCL = "UPDATE tbl_mon_hoc SET con_lai = CASE WHEN con_lai > 0 THEN con_lai - 1 ELSE 0 END WHERE id = " + subjectId + ";";
+        // Tang so luong con lai cua mon
+        String sqlGiamCL = "UPDATE tbl_mon_hoc SET con_lai = CASE WHEN con_lai > 0 THEN con_lai + 1 ELSE 0 END WHERE id = " + subjectId + ";";
         Query query = entityManager.createNativeQuery(sqlGiamCL);
         query.executeUpdate();
-        // Luu mon hoc da dang ky cho nguoi dung
-        String sqlSaveUserSubject = "INSERT INTO users_subjects (`user_id`, `subject_id`) VALUES ('" + userId + "', '" + subjectId + "');";
-        Query querySave = entityManager.createNativeQuery(sqlSaveUserSubject);
-        querySave.executeUpdate();
+        // Xoa mon hoc da dang ky cho nguoi dung
+        String sqlRemoveUserSubject = "DELETE FROM users_subjects AS us WHERE us.user_id = '" + userId + "' AND us.subject_id = '" + subjectId + "';";
+        System.out.println(sqlRemoveUserSubject);
+        Query queryRemove = entityManager.createNativeQuery(sqlRemoveUserSubject);
+        queryRemove.executeUpdate();
         return true;
     }
 }

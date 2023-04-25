@@ -41,6 +41,8 @@ public class Subject {
     @ToString.Exclude
     private List<TimeTable> timeTable;
 
+    private String tongHocPhi;
+
     public Subject() {
     }
 
@@ -159,5 +161,13 @@ public class Subject {
 
     public void setTimeTable(List<TimeTable> timeTable) {
         this.timeTable = timeTable;
+    }
+
+    public String getTongHocPhi() {
+        return tongHocPhi;
+    }
+
+    public void setTongHocPhi(String tongHocPhi) {
+        this.tongHocPhi = tongHocPhi;
     }
 }
